@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kishan's Code Vault ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon: #00ffc6;
+            --panel: rgba(0, 0, 0, 0.65);
+            --bg-dark: #0a0a0a;
+            --bg-light: #181818;
+            --accent: #00e676;
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+        }
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            color: #e6f1f0;
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--bg-dark);
+        }
+        
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            border-bottom: 1px solid var(--neon);
+        }
+        
+        .logo {
+            color: var(--neon);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sound-toggle {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .sound-toggle:hover {
+            background: rgba(0, 255, 198, 0.2);
+        }
+        
+        .wrap {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel {
+            background: var(--panel);
+            padding: 14px;
+            border-radius: 12px;
+            backdrop-filter: blur(6px);
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 255, 198, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .panel:hover {
+            border-color: var(--neon);
+            box-shadow: 0 0 15px rgba(0, 255, 198, 0.2);
+        }
+        
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #000;
+            color: #0f0;
+            padding: 14px;
+            border-radius: 8px;
+            overflow: auto;
+            border: 1px solid #333;
+            max-height: 400px;
+            position: relative;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .code-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: #9e9e9e;
+        }
+        
+        .code-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .code-action-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #9e9e9e;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.2s;
+        }
+        
+        .code-action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neon);
+        }
+        
+        .btns {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .btn:hover {
+            background: rgba(0, 255, 198, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: var(--neon);
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .btn-primary:hover {
+            background: #00e6b3;
+        }
+        
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon);
+            border-radius: 6px;
+            color: var(--neon);
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background: rgba(0, 255, 198, 0.2);
+        }
+        
+        .filter-btn:hover {
+            background: rgba(0, 255, 198, 0.15);
+        }
+        
+        .code-title {
+            color: var(--neon);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .code-description {
+            color: #9e9e9e;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--neon);
+        }
+        
+        .no-data-container {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--panel);
+            border-radius: 12px;
+            border: 2px dashed var(--neon);
+            margin: 20px 0;
+        }
+        
+        .no-data-icon {
+            font-size: 4rem;
+            color: var(--neon);
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        .no-data-title {
+            color: var(--neon);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .no-data-message {
+            color: #9e9e9e;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .funny-message {
+            color: #ffd700;
+            font-size: 1rem;
+            font-style: italic;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        .admin-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--neon);
+            color: #000;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: var(--panel);
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 198, 0.2);
+            min-width: 120px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 198, 0.1);
+        }
+        
+        .stat-number {
+            color: var(--neon);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            color: #9e9e9e;
+            font-size: 0.8rem;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .refresh-btn {
+            background: var(--neon);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        
+        .refresh-btn:hover {
+            background: #00e6b3;
+            transform: translateY(-2px);
+        }
+
+        .sync-info {
+            background: rgba(0, 255, 198, 0.1);
+            border: 1px solid var(--neon);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        /* New Features Styles */
+        .code-upload-time {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #9e9e9e;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        .code-upload-time i {
+            color: var(--neon);
+        }
+        
+        .code-views {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #9e9e9e;
+            font-size: 0.8rem;
+        }
+        
+        .code-views i {
+            color: var(--neon);
+        }
+        
+        .code-tags {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .code-tag {
+            background: rgba(0, 255, 198, 0.1);
+            color: var(--neon);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            border: 1px solid rgba(0, 255, 198, 0.3);
+        }
+        
+        .code-favorite {
+            color: #ffd700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .code-favorite:hover {
+            transform: scale(1.2);
+        }
+        
+        .code-favorite.active {
+            color: #ffaa00;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .view-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .view-toggle-btn.active {
+            background: rgba(0, 255, 198, 0.2);
+        }
+        
+        .grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .grid-view .panel {
+            margin-bottom: 0;
+            height: fit-content;
+        }
+        
+        .grid-view .code-description {
+            height: 60px;
+            overflow: hidden;
+        }
+        
+        .grid-view pre {
+            max-height: 200px;
+        }
+        
+        .list-view .panel {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .code-preview {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .code-preview-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .expand-code-btn {
+            background: rgba(0, 255, 198, 0.8);
+            color: #000;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .code-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .code-modal-content {
+            background: var(--panel);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: auto;
+            padding: 20px;
+            border: 1px solid var(--neon);
+            box-shadow: 0 0 30px rgba(0, 255, 198, 0.3);
+        }
+        
+        .code-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+        
+        .code-modal-title {
+            color: var(--neon);
+            font-size: 1.2rem;
+        }
+        
+        .close-modal {
+            background: transparent;
+            border: none;
+            color: var(--neon);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .code-modal pre {
+            max-height: 70vh;
+        }
+        
+        .sort-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .sort-select {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(0, 255, 198, 0.15);
+        }
+        
+        .code-usage {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #9e9e9e;
+        }
+        
+        .usage-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .usage-item i {
+            color: var(--neon);
+        }
+        
+        .code-rating {
+            display: flex;
+            gap: 3px;
+            margin-top: 5px;
+        }
+        
+        .rating-star {
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .rating-star:hover, .rating-star.active {
+            color: #ffaa00;
+        }
+        
+        .code-complexity {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 10px;
+        }
+        
+        .complexity-beginner {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+        }
+        
+        .complexity-intermediate {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+        }
+        
+        .complexity-advanced {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+        }
+        
+        .code-screenshot {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+        
+        .screenshot-btn {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            margin-top: 5px;
+        }
+        
+        .screenshot-btn:hover {
+            background: rgba(0, 255, 198, 0.1);
+        }
+        
+        .code-actions-expanded {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #9e9e9e;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neon);
+        }
+        
+        .code-expand-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            z-index: 10;
+        }
+        
+        .code-expand-btn:hover {
+            background: rgba(0, 255, 198, 0.2);
+            color: var(--neon);
+        }
+        
+        .dark-theme {
+            --neon: #00ffc6;
+            --panel: rgba(0, 0, 0, 0.65);
+            --bg-dark: #0a0a0a;
+            --bg-light: #181818;
+        }
+        
+        .light-theme {
+            --neon: #0088cc;
+            --panel: rgba(255, 255, 255, 0.8);
+            --bg-dark: #f0f0f0;
+            --bg-light: #ffffff;
+            color: #333;
+        }
+        
+        .light-theme .panel {
+            color: #333;
+        }
+        
+        .light-theme .code-description {
+            color: #666;
+        }
+        
+        .light-theme pre {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .export-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .export-btn {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .export-btn:hover {
+            background: rgba(0, 255, 198, 0.15);
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-action-btn {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .quick-action-btn:hover {
+            background: rgba(0, 255, 198, 0.15);
+        }
+        
+        .code-health {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .health-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .health-good {
+            background: var(--success);
+        }
+        
+        .health-warning {
+            background: var(--warning);
+        }
+        
+        .health-poor {
+            background: var(--danger);
+        }
+        
+        .code-dependencies {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #9e9e9e;
+        }
+        
+        .dependency-item {
+            display: inline-block;
+            background: rgba(0, 255, 198, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .code-comments {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #9e9e9e;
+        }
+        
+        .comment-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .code-share {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .share-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #9e9e9e;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.2s;
+        }
+        
+        .share-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neon);
+        }
+        
+        .lock-icon {
+            margin-right: 6px;
+            transition: transform 0.4s ease, color 0.4s ease;
+            color: var(--neon, #00ffc6);
+        }
+        
+        .yt-btn:hover .lock-icon {
+            transform: rotate(-20deg);
+            color: #ff4444;
+        }
+        
+        .unlocked {
+            color: #ff2222 !important;
+            transform: rotate(0deg) scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .grid-view {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                justify-content: center;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+            }
+            
+            .code-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .code-meta {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+<!-- Background video -->
+<video autoplay loop muted id="bgVid" class="bg-video">
+    <source src="https://raw.githubusercontent.com/KIS566/hvideo/main/VN20251002_162055.mp4" type="video/mp4">
+</video>
+
+<header>
+    <div class="logo">
+        <i class="fas fa-code"></i> ⚡ Kishan's Code Vault
+    </div>
+    <div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i> Theme
+        </button>
+        <button class="sound-toggle" id="soundBtn">🔇</button>
+    </div>
+</header>
+
+<div class="wrap">
+    <!-- Sync Info -->
+    <div class="sync-info" id="syncInfo">
+        <i class="fas fa-sync-alt"></i> Real-time Sync: Changes from Admin Panel appear instantly
+    </div>
+
+    <!-- Admin Link -->
+    <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <a href="admin-panel.html" class="btn admin-link">
+            <i class="fas fa-lock"></i> Admin Panel
+        </a>
+        
+        <!-- YouTube Link with Lock -->
+        <a href="https://www.youtube.com/@codeShalaByKMFL" 
+           target="_blank" 
+           title="YouTube" 
+           class="btn admin-link yt-btn" 
+           id="ytBtn">
+            <i class="fas fa-lock lock-icon"></i>
+            Ha Bhai A Gya Code Lene Isse Aacha Hai Ki Coding Sikh Le Free Me<hr color = "red"><center>
+            <i class="fab fa-youtube yt-icon"></i>CodeShalaByKMFL</center>
+        </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats" id="statsContainer">
+        <div class="stat-card">
+            <div class="stat-number" id="totalCodes">0</div>
+            <div class="stat-label">Total Codes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="htmlCodes">0</div>
+            <div class="stat-label">HTML Codes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="cssCodes">0</div>
+            <div class="stat-label">CSS Codes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="jsCodes">0</div>
+            <div class="stat-label">JS Codes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="favoriteCodes">0</div>
+            <div class="stat-label">Favorites</div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <button class="quick-action-btn" onclick="exportAllCodes()">
+            <i class="fas fa-file-export"></i> Export All
+        </button>
+        <button class="quick-action-btn" onclick="showFavorites()">
+            <i class="fas fa-star"></i> Show Favorites
+        </button>
+        <button class="quick-action-btn" onclick="showRecentlyAdded()">
+            <i class="fas fa-clock"></i> Recently Added
+        </button>
+        <button class="quick-action-btn" onclick="clearAllFilters()">
+            <i class="fas fa-filter"></i> Clear Filters
+        </button>
+    </div>
+    
+    <!-- View Toggle -->
+    <div class="view-toggle">
+        <button class="view-toggle-btn active" id="listViewBtn" data-view="list">
+            <i class="fas fa-list"></i> List View
+        </button>
+        <button class="view-toggle-btn" id="gridViewBtn" data-view="grid">
+            <i class="fas fa-th"></i> Grid View
+        </button>
+    </div>
+    
+    <!-- Sort Options -->
+    <div class="sort-options">
+        <span>Sort by:</span>
+        <select class="sort-select" id="sortSelect" onchange="sortCodes()">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="title">Title A-Z</option>
+            <option value="title-desc">Title Z-A</option>
+            <option value="popular">Most Popular</option>
+            <option value="favorites">Most Favorites</option>
+        </select>
+    </div>
+    
+    <!-- Search and Filter Section -->
+    <div class="search-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search codes by title, description, tags...">
+        <button class="btn" onclick="clearSearch()">Clear</button>
+    </div>
+    
+    <div class="filter-buttons" id="filterButtons">
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="html">HTML</button>
+        <button class="filter-btn" data-category="css">CSS</button>
+        <button class="filter-btn" data-category="javascript">JavaScript</button>
+        <button class="filter-btn" data-category="react">React</button>
+        <button class="filter-btn" data-category="python">Python</button>
+        <button class="filter-btn" data-category="node">Node.js</button>
+        <button class="filter-btn" data-category="other">Other</button>
+    </div>
+    
+    <!-- Codes Container -->
+    <div id="codesContainer">
+        <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i> Loading codes...
+        </div>
+    </div>
+</div>
+
+<!-- Code Modal -->
+<div class="code-modal" id="codeModal">
+    <div class="code-modal-content">
+        <div class="code-modal-header">
+            <h2 class="code-modal-title" id="modalTitle"></h2>
+            <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+        <pre id="modalCode"></pre>
+        <div class="btns" style="margin-top: 15px;">
+            <button class="btn" onclick="copyModalCode()">
+                <i class="fas fa-copy"></i> Copy Code
+            </button>
+            <button class="btn btn-primary" onclick="closeModal()">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Notification -->
+<div class="notification" id="notification"></div>
+
+<script>
+    // Global variables
+    let allCodes = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
+    let currentView = 'list';
+    let currentSort = 'newest';
+    let favorites = JSON.parse(localStorage.getItem('codeVaultFavorites')) || [];
+    
+    // DOM elements
+    const video = document.getElementById("bgVid");
+    const soundBtn = document.getElementById("soundBtn");
+    const codesContainer = document.getElementById("codesContainer");
+    const searchInput = document.getElementById("searchInput");
+    const filterButtons = document.getElementById("filterButtons");
+    const notification = document.getElementById("notification");
+    const syncInfo = document.getElementById("syncInfo");
+    const themeToggle = document.getElementById("themeToggle");
+    const listViewBtn = document.getElementById("listViewBtn");
+    const gridViewBtn = document.getElementById("gridViewBtn");
+    const sortSelect = document.getElementById("sortSelect");
+    const codeModal = document.getElementById("codeModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalCode = document.getElementById("modalCode");
+    const closeModalBtn = document.getElementById("closeModal");
+
+    // Initialize with sample data if no data exists
+    function initializeSampleData() {
+        const sampleCodes = [
+            {
+                id: '1',
+                title: 'Responsive Navbar',
+                description: 'A fully responsive navigation bar with dropdown menu',
+                category: 'html',
+                content: `<nav class="navbar">
+  <div class="nav-brand">My Website</div>
+  <ul class="nav-menu">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li class="dropdown">
+      <a href="#services">Services</a>
+      <ul class="dropdown-menu">
+        <li><a href="#web">Web Development</a></li>
+        <li><a href="#mobile">Mobile Apps</a></li>
+      </ul>
+    </li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>`,
+                uploadTime: new Date().toISOString(),
+                views: 15,
+                favorites: 3,
+                downloads: 8,
+                copies: 12,
+                complexity: 'beginner',
+                tags: ['navbar', 'responsive', 'css']
+            },
+            {
+                id: '2',
+                title: 'CSS Grid Layout',
+                description: 'Modern CSS Grid layout for responsive web design',
+                category: 'css',
+                content: `.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.grid-item {
+  background: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}`,
+                uploadTime: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                views: 25,
+                favorites: 7,
+                downloads: 12,
+                copies: 18,
+                complexity: 'intermediate',
+                tags: ['css-grid', 'responsive', 'layout']
+            },
+            {
+                id: '3',
+                title: 'JavaScript Form Validation',
+                description: 'Client-side form validation with custom error messages',
+                category: 'javascript',
+                content: `function validateForm(form) {
+  const email = form.email.value;
+  const password = form.password.value;
+  const errors = [];
+
+  // Email validation
+  if (!email.includes('@')) {
+    errors.push('Please enter a valid email address');
+  }
+
+  // Password validation
+  if (password.length < 8) {
+    errors.push('Password must be at least 8 characters long');
+  }
+
+  if (errors.length > 0) {
+    displayErrors(errors);
+    return false;
+  }
+
+  return true;
+}
+
+function displayErrors(errors) {
+  const errorContainer = document.getElementById('error-messages');
+  errorContainer.innerHTML = errors.map(error => 
+    '<div class="error">' + error + '</div>'
+  ).join('');
+}`,
+                uploadTime: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                views: 42,
+                favorites: 12,
+                downloads: 20,
+                copies: 25,
+                complexity: 'intermediate',
+                tags: ['javascript', 'validation', 'forms']
+            }
+        ];
+
+        if (!localStorage.getItem('codesData')) {
+            localStorage.setItem('codesData', JSON.stringify(sampleCodes));
+        }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize sample data
+        initializeSampleData();
+        
+        // Load codes from localStorage
+        loadCodes();
+        
+        // Sound toggle
+        video.muted = true;
+        soundBtn.addEventListener("click", () => {
+            video.muted = !video.muted;
+            soundBtn.textContent = video.muted ? "🔇" : "🔊";
+        });
+        
+        // Theme toggle
+        themeToggle.addEventListener("click", toggleTheme);
+        
+        // View toggle
+        listViewBtn.addEventListener("click", () => switchView('list'));
+        gridViewBtn.addEventListener("click", () => switchView('grid'));
+        
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            currentSearch = this.value.toLowerCase();
+            filterAndDisplayCodes();
+        });
+        
+        // Filter buttons
+        filterButtons.addEventListener('click', function(e) {
+            if (e.target.classList.contains('filter-btn')) {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                e.target.classList.add('active');
+                
+                // Set current filter
+                currentFilter = e.target.getAttribute('data-category');
+                filterAndDisplayCodes();
+            }
+        });
+        
+        // Modal close
+        closeModalBtn.addEventListener('click', closeModal);
+        codeModal.addEventListener('click', function(e) {
+            if (e.target === codeModal) {
+                closeModal();
+            }
+        });
+
+        // YouTube button lock animation
+        const ytBtn = document.getElementById("ytBtn");
+        const lockIcon = ytBtn.querySelector(".lock-icon");
+
+        ytBtn.addEventListener("mouseenter", () => {
+            lockIcon.classList.remove("fa-lock");
+            lockIcon.classList.add("fa-lock-open", "unlocked");
+        });
+
+        ytBtn.addEventListener("mouseleave", () => {
+            lockIcon.classList.remove("fa-lock-open", "unlocked");
+            lockIcon.classList.add("fa-lock");
+        });
+
+        // Check for localStorage updates every 2 seconds
+        setInterval(checkForUpdates, 2000);
+    });
+
+    // Toggle theme
+    function toggleTheme() {
+        const body = document.body;
+        if (body.classList.contains('dark-theme')) {
+            body.classList.remove('dark-theme');
+            body.classList.add('light-theme');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i> Theme';
+        } else {
+            body.classList.remove('light-theme');
+            body.classList.add('dark-theme');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i> Theme';
+        }
+    }
+    
+    // Switch view
+    function switchView(view) {
+        currentView = view;
+        
+        // Update active button
+        listViewBtn.classList.toggle('active', view === 'list');
+        gridViewBtn.classList.toggle('active', view === 'grid');
+        
+        // Update container class
+        codesContainer.classList.toggle('list-view', view === 'list');
+        codesContainer.classList.toggle('grid-view', view === 'grid');
+        
+        // Re-display codes
+        filterAndDisplayCodes();
+    }
+    
+    // Sort codes
+    function sortCodes() {
+        currentSort = sortSelect.value;
+        filterAndDisplayCodes();
+    }
+    
+    // Check for updates in localStorage
+    function checkForUpdates() {
+        const savedCodes = localStorage.getItem('codesData');
+        if (savedCodes) {
+            const newCodes = JSON.parse(savedCodes);
+            if (JSON.stringify(newCodes) !== JSON.stringify(allCodes)) {
+                allCodes = newCodes;
+                filterAndDisplayCodes();
+                updateStats();
+                showNotification('🔄 Codes updated from Admin Panel!', 'info');
+            }
+        }
+    }
+    
+    // Load codes from localStorage
+    async function loadCodes() {
+        try {
+            codesContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Local Storage से कोड्स लोड हो रहे हैं...</div>';
+            
+            // Try to load from localStorage first
+            const savedCodes = localStorage.getItem('codesData');
+            
+            if (savedCodes) {
+                allCodes = JSON.parse(savedCodes);
+                
+                if (allCodes.length === 0) {
+                    showNoDataMessage();
+                } else {
+                    filterAndDisplayCodes();
+                    showNotification('✅ Local Storage से कोड्स लोड हुए!', 'success');
+                }
+                
+            } else {
+                showNoDataMessage();
+            }
+            
+            updateStats();
+            
+        } catch (error) {
+            console.error('Error loading codes:', error);
+            showNoDataMessage();
+            updateStats();
+        }
+    }
+    
+    // Show no data message in Hindi with funny style
+    function showNoDataMessage() {
+        const funnyMessages = [
+            "अरे भाई! Local Storage खाली है! 🤷‍♂️",
+            "कोड्स कहाँ गए? शायद वो छुट्टी पर चले गए! 🏖️",
+            "यहाँ तो सन्नाटा पसरा हुआ है... कोड्स नहीं मिल रहे! 😴",
+            "Local Storage में कोड्स का नामोनिशान तक नहीं! 🕵️‍♂️",
+            "अभी तो यहाँ कोड्स आने ही वाले हैं... थोड़ा सब्र रखो! ⏳"
+        ];
+        
+        const randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+        
+        codesContainer.innerHTML = `
+            <div class="no-data-container">
+                <div class="no-data-icon">
+                    <i class="fas fa-frown-open"></i>
+                </div>
+                <h2 class="no-data-title">कोई कोड्स नहीं मिले! 😔</h2>
+                <div class="no-data-message">
+                    Local Storage से कोई कोड्स लोड नहीं हो पाए।<br>
+                    कृपया एडमिन पैनल में जाकर कुछ कोड्स जोड़ें।
+                </div>
+                <div class="funny-message">
+                    "${randomMessage}"
+                </div>
+                <button class="refresh-btn" onclick="loadCodes()">
+                    <i class="fas fa-sync-alt"></i> फिर से कोशिश करें
+                </button>
+                <div style="margin-top: 20px;">
+                    <a href="admin-panel.html" class="btn" style="text-decoration: none;">
+                        <i class="fas fa-plus"></i> एडमिन पैनल में कोड जोड़ें
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Update statistics
+    function updateStats() {
+        document.getElementById('totalCodes').textContent = allCodes.length;
+        document.getElementById('htmlCodes').textContent = allCodes.filter(code => code.category === 'html').length;
+        document.getElementById('cssCodes').textContent = allCodes.filter(code => code.category === 'css').length;
+        document.getElementById('jsCodes').textContent = allCodes.filter(code => code.category === 'javascript').length;
+        document.getElementById('favoriteCodes').textContent = favorites.length;
+    }
+    
+    // Filter and display codes based on current filter and search
+    function filterAndDisplayCodes() {
+        let filteredCodes = allCodes;
+        
+        // Apply category filter
+        if (currentFilter !== 'all') {
+            filteredCodes = filteredCodes.filter(code => 
+                code.category === currentFilter
+            );
+        }
+        
+        // Apply search filter
+        if (currentSearch) {
+            filteredCodes = filteredCodes.filter(code => 
+                code.title.toLowerCase().includes(currentSearch) ||
+                code.description.toLowerCase().includes(currentSearch) ||
+                code.content.toLowerCase().includes(currentSearch) ||
+                (code.tags && code.tags.some(tag => tag.toLowerCase().includes(currentSearch)))
+            );
+        }
+        
+        // Apply sorting
+        filteredCodes = sortCodesList(filteredCodes);
+        
+        // Display codes
+        displayCodes(filteredCodes);
+    }
+    
+    // Sort codes based on current sort option
+    function sortCodesList(codes) {
+        switch(currentSort) {
+            case 'newest':
+                return codes.sort((a, b) => new Date(b.uploadTime || 0) - new Date(a.uploadTime || 0));
+            case 'oldest':
+                return codes.sort((a, b) => new Date(a.uploadTime || 0) - new Date(b.uploadTime || 0));
+            case 'title':
+                return codes.sort((a, b) => a.title.localeCompare(b.title));
+            case 'title-desc':
+                return codes.sort((a, b) => b.title.localeCompare(a.title));
+            case 'popular':
+                return codes.sort((a, b) => (b.views || 0) - (a.views || 0));
+            case 'favorites':
+                return codes.sort((a, b) => (b.favorites || 0) - (a.favorites || 0));
+            default:
+                return codes;
+        }
+    }
+    
+    // Display codes in the container
+    function displayCodes(codes) {
+        if (codes.length === 0) {
+            if (allCodes.length === 0) {
+                showNoDataMessage();
+            } else {
+                codesContainer.innerHTML = `
+                    <div class="no-data-container">
+                        <div class="no-data-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h2 class="no-data-title">कोई मैचिंग कोड नहीं मिला! 🔍</h2>
+                        <div class="no-data-message">
+                            आपकी खोज के अनुसार कोई कोड नहीं मिला।<br>
+                            कृपया अलग कीवर्ड या फ़िल्टर आज़माएं।
+                        </div>
+                        <button class="btn" onclick="clearSearch()">
+                            <i class="fas fa-times"></i> सर्च क्लियर करें
+                        </button>
+                    </div>
+                `;
+            }
+            return;
+        }
+        
+        let html = '';
+        codes.forEach((code, index) => {
+            const isFavorite = favorites.includes(code.id);
+            const uploadTime = code.uploadTime ? new Date(code.uploadTime).toLocaleString('hi-IN') : 'Unknown';
+            const views = code.views || 0;
+            const complexity = code.complexity || 'beginner';
+            const complexityClass = `complexity-${complexity}`;
+            const complexityText = complexity === 'beginner' ? 'Beginner' : 
+                                 complexity === 'intermediate' ? 'Intermediate' : 'Advanced';
+            
+            // Generate tags HTML
+            let tagsHtml = '';
+            if (code.tags && code.tags.length > 0) {
+                code.tags.forEach(tag => {
+                    tagsHtml += `<span class="code-tag">${tag}</span>`;
+                });
+            }
+            
+            // Generate code preview (first 200 characters)
+            const codePreview = code.content.length > 200 ? code.content.substring(0, 200) + '...' : code.content;
+            
+            html += `
+                <section class="panel">
+                    <div class="code-header">
+                        <h2 class="code-title">
+                            <i class="fas fa-${getCategoryIcon(code.category)}"></i> 
+                            ${code.title}
+                            <span class="code-complexity ${complexityClass}">${complexityText}</span>
+                        </h2>
+                        <div class="code-meta">
+                            <span class="code-views">
+                                <i class="fas fa-eye"></i> ${views}
+                            </span>
+                            <span class="code-favorite ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${code.id}')">
+                                <i class="fas fa-star"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="code-description">${code.description}</div>
+                    
+                    ${tagsHtml ? `<div class="code-tags">${tagsHtml}</div>` : ''}
+                    
+                    <div class="code-upload-time">
+                        <i class="fas fa-clock"></i> Uploaded: ${uploadTime}
+                    </div>
+                    
+                    <div class="code-preview">
+                        <pre id="code${index}">${escapeHtml(codePreview)}</pre>
+                        ${code.content.length > 200 ? `
+                            <div class="code-preview-overlay">
+                                <button class="expand-code-btn" onclick="expandCode('${code.id}')">
+                                    <i class="fas fa-expand"></i> View Full Code
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="code-usage">
+                        <div class="usage-item">
+                            <i class="fas fa-download"></i> ${code.downloads || 0} downloads
+                        </div>
+                        <div class="usage-item">
+                            <i class="fas fa-copy"></i> ${code.copies || 0} copies
+                        </div>
+                    </div>
+                    
+                    <div class="code-actions-expanded">
+                        <button class="action-btn" onclick="copyCode('${code.id}')">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                        <button class="action-btn" onclick="downloadCode('${code.id}')">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                        <button class="action-btn" onclick="expandCode('${code.id}')">
+                            <i class="fas fa-expand"></i> Expand
+                        </button>
+                        <button class="action-btn" onclick="shareCode('${code.id}')">
+                            <i class="fas fa-share"></i> Share
+                        </button>
+                    </div>
+                </section>
+            `;
+        });
+        
+        codesContainer.innerHTML = html;
+    }
+    
+    // Expand code in modal
+    function expandCode(codeId) {
+        const code = allCodes.find(c => c.id === codeId);
+        if (code) {
+            modalTitle.textContent = code.title;
+            modalCode.textContent = code.content;
+            codeModal.style.display = 'flex';
+            
+            // Track view
+            if (!code.views) code.views = 0;
+            code.views++;
+            saveCodesToStorage();
+            updateStats();
+        }
+    }
+    
+    // Close modal
+    function closeModal() {
+        codeModal.style.display = 'none';
+    }
+    
+    // Copy code from modal
+    function copyModalCode() {
+        const code = modalCode.textContent;
+        navigator.clipboard.writeText(code).then(() => {
+            showNotification('Code copied to clipboard!');
+        });
+    }
+    
+    // Toggle favorite
+    function toggleFavorite(codeId) {
+        const index = favorites.indexOf(codeId);
+        if (index > -1) {
+            favorites.splice(index, 1);
+        } else {
+            favorites.push(codeId);
+        }
+        
+        localStorage.setItem('codeVaultFavorites', JSON.stringify(favorites));
+        filterAndDisplayCodes();
+        updateStats();
+        
+        const code = allCodes.find(c => c.id === codeId);
+        if (code) {
+            if (!code.favorites) code.favorites = 0;
+            code.favorites += index > -1 ? -1 : 1;
+            saveCodesToStorage();
+        }
+        
+        showNotification(index > -1 ? 'Removed from favorites!' : 'Added to favorites!');
+    }
+    
+    // Show favorites
+    function showFavorites() {
+        const favoriteCodes = allCodes.filter(code => favorites.includes(code.id));
+        if (favoriteCodes.length === 0) {
+            showNotification('No favorite codes yet!', 'info');
+            return;
+        }
+        
+        // Update UI to show favorites
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector('.filter-btn[data-category="all"]').classList.add('active');
+        currentFilter = 'all';
+        
+        displayCodes(favoriteCodes);
+        showNotification(`Showing ${favoriteCodes.length} favorite codes!`, 'success');
+    }
+    
+    // Show recently added
+    function showRecentlyAdded() {
+        const recentCodes = [...allCodes]
+            .sort((a, b) => new Date(b.uploadTime || 0) - new Date(a.uploadTime || 0))
+            .slice(0, 10);
+        
+        displayCodes(recentCodes);
+        showNotification('Showing 10 most recently added codes!', 'success');
+    }
+    
+    // Clear all filters
+    function clearAllFilters() {
+        searchInput.value = '';
+        currentSearch = '';
+        
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector('.filter-btn[data-category="all"]').classList.add('active');
+        currentFilter = 'all';
+        
+        sortSelect.value = 'newest';
+        currentSort = 'newest';
+        
+        filterAndDisplayCodes();
+        showNotification('All filters cleared!', 'success');
+    }
+    
+    // Export all codes
+    function exportAllCodes() {
+        const dataStr = JSON.stringify(allCodes, null, 2);
+        const dataBlob = new Blob([dataStr], {type: 'application/json'});
+        
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(dataBlob);
+        a.download = 'kishan-code-vault-backup.json';
+        a.click();
+        
+        showNotification('All codes exported successfully!', 'success');
+    }
+    
+    // Share code
+    function shareCode(codeId) {
+        const code = allCodes.find(c => c.id === codeId);
+        if (code) {
+            if (navigator.share) {
+                navigator.share({
+                    title: code.title,
+                    text: code.description,
+                    url: window.location.href + '?code=' + codeId
+                }).then(() => {
+                    showNotification('Code shared successfully!');
+                }).catch(err => {
+                    console.error('Error sharing:', err);
+                    copyCodeToClipboard(code.content);
+                    showNotification('Code copied to clipboard for sharing!');
+                });
+            } else {
+                copyCodeToClipboard(code.content);
+                showNotification('Code copied to clipboard for sharing!');
+            }
+        }
+    }
+    
+    // Copy code to clipboard by ID
+    function copyCode(codeId) {
+        const code = allCodes.find(c => c.id === codeId);
+        if (code) {
+            navigator.clipboard.writeText(code.content).then(() => {
+                showNotification('Code copied to clipboard!');
+                
+                // Track copies
+                if (!code.copies) code.copies = 0;
+                code.copies++;
+                saveCodesToStorage();
+            });
+        }
+    }
+    
+    // Copy code to clipboard
+    function copyCodeToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showNotification('Code copied to clipboard!');
+        });
+    }
+    
+    // Download code as file
+    function downloadCode(codeId) {
+        const code = allCodes.find(c => c.id === codeId);
+        if (code) {
+            const blob = new Blob([code.content], { type: "text/plain" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = `${code.title.replace(/\s+/g, '_')}.${getFileExtension(code.category)}`;
+            a.click();
+            
+            // Track downloads
+            if (!code.downloads) code.downloads = 0;
+            code.downloads++;
+            saveCodesToStorage();
+            
+            showNotification('Code downloaded successfully!');
+        }
+    }
+    
+    // Save codes to localStorage
+    function saveCodesToStorage() {
+        localStorage.setItem('codesData', JSON.stringify(allCodes));
+    }
+    
+    // Clear search
+    function clearSearch() {
+        searchInput.value = '';
+        currentSearch = '';
+        filterAndDisplayCodes();
+    }
+    
+    // Show notification
+    function showNotification(message, type = 'success') {
+        notification.textContent = message;
+        notification.style.display = 'block';
+        
+        if (type === 'error') {
+            notification.style.background = '#ff5555';
+        } else if (type === 'info') {
+            notification.style.background = '#4fc3f7';
+        } else {
+            notification.style.background = 'var(--neon)';
+        }
+        
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+    
+    // Helper functions
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    function getCategoryIcon(category) {
+        const icons = {
+            'html': 'html5',
+            'css': 'css3-alt',
+            'javascript': 'js',
+            'react': 'react',
+            'python': 'python',
+            'node': 'node-js',
+            'other': 'code'
+        };
+        return icons[category] || 'code';
+    }
+    
+    function getFileExtension(category) {
+        const extensions = {
+            'html': 'html',
+            'css': 'css',
+            'javascript': 'js',
+            'react': 'jsx',
+            'python': 'py',
+            'node': 'js',
+            'other': 'txt'
+        };
+        return extensions[category] || 'txt';
+    }
+</script>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</body>
+</html>
